@@ -1,6 +1,8 @@
 package dev.jamal.projetotcc.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @AllArgsConstructor
@@ -20,7 +22,8 @@ public class UserHobbyFeedback {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Min(1)
+    @Max(5)
     private Integer rating; // nota de 1 a 5
 
     @ManyToOne(fetch = FetchType.LAZY)
