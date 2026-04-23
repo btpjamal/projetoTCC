@@ -2,6 +2,7 @@ package dev.jamal.projetotcc.Entities;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 // diz que essa classe pode ser embutida como ID
+@Data
 @Embeddable
 public class UserInterestId implements Serializable {
 
