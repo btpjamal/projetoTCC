@@ -1,3 +1,4 @@
+/*
 package dev.jamal.projetotcc;
 
 import dev.jamal.projetotcc.Entities.*;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@Profile("dev")
 public class TestRepositoryRunner {
     private final UserRepository userRepository;
     private final HobbyRepository hobbyRepository;
@@ -79,3 +81,5 @@ public class TestRepositoryRunner {
         };
     }
 }
+
+ */
