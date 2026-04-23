@@ -20,6 +20,6 @@ public class FeedbackService {
     }
 
     public List<UserHobbyFeedback> listarPorUsuario(Long userId){
-        return userHobbyFeedbackRepository.findByUserId(userId);
+        return userHobbyFeedbackRepository.buscarComHobby(userId);
     }
 }
