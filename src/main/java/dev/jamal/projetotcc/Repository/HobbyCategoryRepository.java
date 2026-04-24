@@ -1,9 +1,20 @@
 package dev.jamal.projetotcc.Repository;
 
+import dev.jamal.projetotcc.Entities.Hobby;
 import dev.jamal.projetotcc.Entities.HobbyCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface HobbyCategoryRepository extends JpaRepository<HobbyCategory, Long> {
+
+    @Query("""
+    SELECT h
+    FROM Hobby h
+    JOIN FETCH h.category
+""")
+    List<Hobby> findAllWithCategory();
 }
