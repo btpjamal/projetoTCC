@@ -1,5 +1,10 @@
 package dev.jamal.projetotcc;
 
+import dev.jamal.projetotcc.DTO.Feedback.FeedbackCreateRequestDTO;
+import dev.jamal.projetotcc.DTO.Hobby.HobbyCreateRequestDTO;
+import dev.jamal.projetotcc.DTO.Hobby.HobbyResponseDTO;
+import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
+import dev.jamal.projetotcc.DTO.User.UserResponseDTO;
 import dev.jamal.projetotcc.Entities.*;
 import dev.jamal.projetotcc.Repository.HobbyCategoryRepository;
 import dev.jamal.projetotcc.Repository.HobbyRepository;
@@ -55,41 +60,56 @@ public class TestServiceRunner {
             // ==========================
             // USER
             // ==========================
-            User user = userRepository
+            UserResponseDTO user = userRepository
                     .findByEmail("joao@email.com")
-                    .orElseGet(() -> {
+                    .map(u -> new UserResponseDTO(
+                            u.getId(),
+                            u.getNome(),
+                            u.getEmail(),
+                            u.getDataCadastro()
+                    ))
+                            .orElseGet(() ->{
+                                UserCreateRequestDTO dto= new UserCreateRequestDTO();
+                                dto.setNome("João");
+                                dto.setEmail("joao@email.com");
+                                dto.setSenha("123");
 
-                        User novo = new User();
-                        novo.setNome("João");
-                        novo.setEmail("joao@email.com");
-                        novo.setSenha("123");
-
-                        return userService.cadastrar(novo);
-                    });
+                                return userService.cadastrar(dto);
+                            });
 
             System.out.println("Usuário OK: " + user.getNome());
 
             // ==========================
             // HOBBY
             // ==========================
-            Hobby hobby = hobbyRepository
+            HobbyResponseDTO hobby = hobbyRepository
                     .findAll()
                     .stream()
                     .filter(h -> h.getNome().equalsIgnoreCase("Corrida"))
                     .findFirst()
+                    .map(h -> new HobbyResponseDTO(
+                            h.getId(),
+                            h.getNome(),
+                            h.getDescricao(),
+                            h.getCustoEstimado(),
+                            h.getNivelDificuldade(),
+                            h.getTempoNecessario(),
+                            h.getTipoSocializacao(),
+                            null
+                    ))
                     .orElseGet(() -> {
+                        HobbyCreateRequestDTO dto = new HobbyCreateRequestDTO();
+                        dto.setNome("Corrida");
+                        dto.setDescricao("Atividade física ao ar livre");
+                        dto.setCustoEstimado(0.0);
+                        dto.setNivelDificuldade(2);
+                        dto.setTempoNecessario(1.0);
+                        dto.setTipoSocializacao(Hobby.TipoSocial.INDIVIDUAL);
+                        dto.setCategoryId(esporte.getId());
 
-                        Hobby novo = new Hobby();
-                        novo.setNome("Corrida");
-                        novo.setDescricao("Atividade física ao ar livre");
-                        novo.setCustoEstimado(0.0);
-                        novo.setNivelDificuldade(2);
-                        novo.setTempoNecessario(1.0);
-                        novo.setTipoSocializacao(Hobby.TipoSocial.INDIVIDUAL);
-                        novo.setCategory(esporte);
-
-                        return hobbyService.salvar(novo);
+                        return hobbyService.cadastrar(dto);
                     });
+
 
             System.out.println("Hobby OK: " + hobby.getNome());
 
@@ -123,14 +143,12 @@ public class TestServiceRunner {
 
             if (!feedbackExiste) {
 
-                UserHobbyFeedback feedback =
-                        new UserHobbyFeedback();
+                FeedbackCreateRequestDTO dto= new FeedbackCreateRequestDTO();
+                dto.setUserId(user.getId());
+                dto.setHobbyId(hobby.getId());
+                dto.setRating(5);
 
-                feedback.setUser(user);
-                feedback.setHobby(hobby);
-                feedback.setRating(5);
-
-                feedbackService.salvar(feedback);
+                feedbackService.avaliar(dto);
 
                 System.out.println("Feedback criado.");
             } else {

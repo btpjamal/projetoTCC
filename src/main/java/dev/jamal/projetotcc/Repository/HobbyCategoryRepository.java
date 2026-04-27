@@ -10,11 +10,4 @@ import java.util.List;
 
 @Repository
 public interface HobbyCategoryRepository extends JpaRepository<HobbyCategory, Long> {
-
-    @Query("""
-    SELECT h
-    FROM Hobby h
-    JOIN FETCH h.category
-""")
-    List<Hobby> findAllWithCategory();
 }

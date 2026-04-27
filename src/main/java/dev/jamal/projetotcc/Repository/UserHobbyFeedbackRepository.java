@@ -12,12 +12,13 @@ import java.util.List;
 public interface UserHobbyFeedbackRepository extends JpaRepository<UserHobbyFeedback, Long> {
 
     @Query("""
-    SELECT f
-    FROM UserHobbyFeedback f
-    JOIN FETCH f.hobby
-    JOIN FETCH f.user    
-    WHERE f.user.id =:userId        
+        SELECT f
+        FROM UserHobbyFeedback f
+        JOIN FETCH f.hobby h
+        JOIN FETCH h.category    
+        JOIN FETCH f.user    
+        WHERE f.user.id =:userId        
     """)
-    List<UserHobbyFeedback> buscarComHobbyEUsuario(Long userId);
+    List<UserHobbyFeedback> buscarComHobbyEUsuario(@Param("userId") Long userId);
 
 }
