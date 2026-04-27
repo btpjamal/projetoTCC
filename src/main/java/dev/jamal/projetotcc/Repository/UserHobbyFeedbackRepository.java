@@ -15,8 +15,9 @@ public interface UserHobbyFeedbackRepository extends JpaRepository<UserHobbyFeed
     SELECT f
     FROM UserHobbyFeedback f
     JOIN FETCH f.hobby
+    JOIN FETCH f.user    
     WHERE f.user.id =:userId        
     """)
-    List<UserHobbyFeedback> buscarComHobby(@Param("userId") Long userId);
+    List<UserHobbyFeedback> buscarComHobbyEUsuario(Long userId);
 
 }
