@@ -1,8 +1,7 @@
--> criar mappers
--> 13. UserProfileMapper
+-> criar mappers -> OK
+-> revisar service -> FeedBackService usando DTO
 revisar entities
 revisar repository
-revisar service
 garantir que tudo esteja funcionando antes de criar o service de recomendação
 analisar a possível implementação de inteligencia artificial no service de recomendação,
 ele iria ler o banco de dados e devolver uma resposta no Json para o front-end renderizar
