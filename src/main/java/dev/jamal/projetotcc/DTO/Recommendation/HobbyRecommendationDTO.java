@@ -17,6 +17,7 @@ public class HobbyRecommendationDTO {
     private String categoria;
     private Double score;
     private String motivo;
+    private String planoInicial;
 }
 /*
 
