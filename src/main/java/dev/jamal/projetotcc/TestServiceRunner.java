@@ -6,12 +6,10 @@ import dev.jamal.projetotcc.DTO.Hobby.HobbyResponseDTO;
 import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.User.UserResponseDTO;
 import dev.jamal.projetotcc.Entities.*;
-import dev.jamal.projetotcc.Repository.HobbyCategoryRepository;
-import dev.jamal.projetotcc.Repository.HobbyRepository;
-import dev.jamal.projetotcc.Repository.InterestRepository;
-import dev.jamal.projetotcc.Repository.UserRepository;
+import dev.jamal.projetotcc.Repository.*;
 import dev.jamal.projetotcc.Service.FeedbackService;
 import dev.jamal.projetotcc.Service.HobbyService;
+import dev.jamal.projetotcc.Service.RecommendationService;
 import dev.jamal.projetotcc.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -32,6 +30,10 @@ public class TestServiceRunner {
     private final HobbyRepository hobbyRepository;
     private final HobbyCategoryRepository categoryRepository;
     private final InterestRepository interestRepository;
+
+    private final RecommendationService recommendationService;
+    private final UserProfileRepository userProfileRepository;
+    private final UserInterestRepository userInterestRepository;
 
     @Bean
     CommandLineRunner run() {
@@ -154,6 +156,64 @@ public class TestServiceRunner {
             } else {
                 System.out.println("Feedback já existente.");
             }
+
+            // ==========================
+            // USER PROFILE
+            // ==========================
+            UserProfile profile = userProfileRepository
+                    .findByUserId(user.getId())
+                    .orElseGet(() -> {
+                        User usuarioEntidade = userRepository.findById(user.getId())
+                                .orElseThrow();
+
+                        UserProfile novo = new UserProfile();
+                        novo.setUser(usuarioEntidade);
+                        novo.setTempoDisponivel(2.0);
+                        novo.setOrcamento(50.0);
+                        novo.setNivelSocial(UserProfile.NivelSocial.INTROVERTIDO);
+
+                        return userProfileRepository.save(novo);
+                    });
+
+            System.out.println("Perfil OK: " + profile.getNivelSocial());
+
+            // ==========================
+            // USER INTEREST
+            // ==========================
+            User usuarioEntidade = userRepository.findById(user.getId())
+                    .orElseThrow();
+
+            UserInterestId userInterestId = new UserInterestId();
+            userInterestId.setUserId(usuarioEntidade.getId());
+            userInterestId.setInterestId(interest.getId());
+
+            if (!userInterestRepository.existsById(userInterestId)) {
+                UserInterest userInterest = new UserInterest();
+                userInterest.setId(userInterestId);
+                userInterest.setUser(usuarioEntidade);
+                userInterest.setInterest(interest);
+                userInterest.setPeso(5);
+
+                userInterestRepository.save(userInterest);
+
+                System.out.println("Interesse do usuário criado.");
+            } else {
+                System.out.println("Interesse do usuário já existente.");
+            }
+
+            // ==========================
+            // RECOMMENDATION SERVICE
+            // ==========================
+            System.out.println("\n===== RECOMENDAÇÕES =====");
+
+            recommendationService.recomendar(user.getId())
+                    .forEach(r -> System.out.println(
+                            r.getNome()
+                                    + " | Score: "
+                                    + r.getScore()
+                                    + " | "
+                                    + r.getMotivo()
+                    ));
 
             // ==========================
             // RELATÓRIO FINAL
