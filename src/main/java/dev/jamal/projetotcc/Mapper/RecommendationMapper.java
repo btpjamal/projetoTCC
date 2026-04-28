@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RecommendationMapper {
 
+// planoInicial entra depois com IA
     public HobbyRecommendationDTO toDTO(
             Hobby hobby,
             Double score,
@@ -18,7 +19,8 @@ public class RecommendationMapper {
                 hobby.getDescricao(),
                 hobby.getCategory().getNome(),
                 score,
-                motivo
+                motivo,
+                null
         );
     }
 }
