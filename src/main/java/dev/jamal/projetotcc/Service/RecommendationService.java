@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,12 @@ public class RecommendationService {
 
         List<Hobby> hobbies = hobbyRepository.findAllWithCategory();
 
+        Set<Long> hobbiesJaAvaliados = feedbacks.stream()
+                .map(f -> f.getHobby().getId())
+                .collect(Collectors.toSet());
+
         return hobbies.stream()
+                .filter(h -> !hobbiesJaAvaliados.contains(h.getId()))
                 .map(hobby -> {
                     double score = calcularScore(hobby, profile, interesses, feedbacks);
                     String motivo = gerarMotivo(hobby, profile, interesses, score);
@@ -159,7 +166,7 @@ public class RecommendationService {
         }
 
         if (hobby.getTipoSocializacao() == Hobby.TipoSocial.INDIVIDUAL && profile.getNivelSocial() == UserProfile.NivelSocial.INTROVERTIDO) {
-            motivos.add("Combina com atividades mais individuais");
+            motivos.add("combina com atividades mais individuais");
         }
 
         if (hobby.getTipoSocializacao() == Hobby.TipoSocial.SOCIAL && profile.getNivelSocial() == UserProfile.NivelSocial.EXTROVERTIDO) {
