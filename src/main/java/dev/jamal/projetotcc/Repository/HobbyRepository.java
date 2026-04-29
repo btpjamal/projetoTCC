@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HobbyRepository extends JpaRepository<Hobby, Long> {
@@ -17,4 +18,8 @@ public interface HobbyRepository extends JpaRepository<Hobby, Long> {
         JOIN FETCH h.category       
     """)
     List<Hobby> findAllWithCategory();
+
+    boolean existsByNomeIgnoreCase(String nome);
+
+    Optional<Hobby> findByNomeIgnoreCase(String nome);
 }
