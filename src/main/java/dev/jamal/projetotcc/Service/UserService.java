@@ -19,6 +19,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+
+    // CREATE
     public UserResponseDTO cadastrar(UserCreateRequestDTO dto){
 
         if (userRepository.existsByEmail(dto.getEmail())){
@@ -31,12 +33,58 @@ public class UserService {
         return userMapper.toResponseDTO(salvo);
     }
 
+    // READ ALL
     @Transactional
     public List<UserResponseDTO> listarTodos(){
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponseDTO)
                 .toList();
+    }
+
+    // READ BY ID
+    @Transactional
+    public UserResponseDTO buscarPorId(Long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return userMapper.toResponseDTO(user);
+    }
+
+    // UPDATE
+    public UserResponseDTO atualizar(
+        Long id,
+        UserCreateRequestDTO dto
+    ) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // valida email duplicado
+        userRepository.findByEmail(dto.getEmail())
+                .ifPresent(outro -> {
+                    if (!outro.getId().equals(id)) {
+                        throw new RuntimeException("Email já está em uso.");
+                    }
+                });
+
+        user.setNome(dto.getNome());
+        user.setEmail(dto.getEmail());
+        user.setSenha(dto.getSenha());
+
+        User atualizado = userRepository.save(user);
+
+        return userMapper.toResponseDTO(atualizado);
+    }
+
+    // DELETE
+    public void deletar(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("Usuário não encontrado.");
+        }
+
+        userRepository.deleteById(id);
     }
 
     // Esse método pode existir para uso interno de outros services.

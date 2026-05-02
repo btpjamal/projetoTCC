@@ -12,7 +12,6 @@ import dev.jamal.projetotcc.Repository.UserInterestRepository;
 import dev.jamal.projetotcc.Repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class RecommendationService {
                 .filter(h -> !hobbiesJaAvaliados.contains(h.getId()))
                 .map(hobby -> {
                     double score = calcularScore(hobby, profile, interesses, feedbacks);
-                    String motivo = gerarMotivo(hobby, profile, interesses, score);
+                    String motivo = gerarMotivo(hobby, profile, interesses, feedbacks);
 
                     return recommendationMapper.toDTO(hobby, score, motivo);
                 })
@@ -131,21 +130,37 @@ public class RecommendationService {
 
     private double calcularScoreFeedback(Hobby hobby, List<UserHobbyFeedback> feedbacks) {
         return feedbacks.stream()
-                .filter(f -> f.getHobby().getCategory().getNome()
-                        .equalsIgnoreCase(hobby.getCategory().getNome()))
-                .mapToDouble(f -> {
-                    if (f.getRating() >= 4) return 10.0;
-                    if (f.getRating() == 3) return 3.0;
-                    return -10.0;
-                })
+                .filter(f -> mesmaCategoria(f.getHobby(), hobby))
+                .mapToDouble(f -> calcularImpactoNota(f.getRating()))
                 .sum();
+    }
+
+    private boolean mesmaCategoria(Hobby hobbyAvaliado, Hobby hobbyCandidato) {
+        return hobbyAvaliado.getCategory()
+                .getNome()
+                .equalsIgnoreCase(hobbyCandidato.getCategory().getNome());
+    }
+
+    private double calcularImpactoNota(Integer rating) {
+        if (rating == null) {
+            return 0.0;
+        }
+
+        return switch (rating) {
+            case 5 -> 15.0;
+            case 4 -> 8.0;
+            case 3 -> 2.0;
+            case 2 -> -8.0;
+            case 1 -> -15.0;
+            default -> 0.0;
+        };
     }
 
     private String gerarMotivo(
             Hobby hobby,
             UserProfile profile,
             List<UserInterest> interesses,
-            double score
+            List<UserHobbyFeedback> feedbacks
     ) {
         List<String> motivos = new ArrayList<>();
 
@@ -171,6 +186,14 @@ public class RecommendationService {
 
         if (hobby.getTipoSocializacao() == Hobby.TipoSocial.SOCIAL && profile.getNivelSocial() == UserProfile.NivelSocial.EXTROVERTIDO) {
             motivos.add("combina com atividades sociais");
+        }
+
+        double impactoFeedback = calcularScoreFeedback(hobby, feedbacks);
+
+        if (impactoFeedback > 0) {
+            motivos.add("seu histórico geral nessa categoria é positivo");
+        } else if (impactoFeedback < 0) {
+            motivos.add("seu histórico nessa categoria teve avaliações mais baixas, mas o hobby ainda apresenta compatibilidade com seu perfil");
         }
 
         if (motivos.isEmpty()) {
