@@ -4,6 +4,7 @@ import dev.jamal.projetotcc.DTO.Profile.UserProfileCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.Profile.UserProfileResponseDTO;
 import dev.jamal.projetotcc.Entities.User;
 import dev.jamal.projetotcc.Entities.UserProfile;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.UserProfileMapper;
 import dev.jamal.projetotcc.Repository.UserProfileRepository;
 import dev.jamal.projetotcc.Repository.UserRepository;
@@ -23,7 +24,7 @@ public class UserProfileService {
     @Transactional
     public UserProfileResponseDTO buscarPorUsuario(Long userId) {
         UserProfile profile = userProfileRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Perfil do usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Perfil do usuário não encontrado."));
 
         return userProfileMapper.toResponseDTO(profile);
     }
@@ -33,7 +34,7 @@ public class UserProfileService {
             UserProfileCreateRequestDTO dto
     ) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
         UserProfile profile = userProfileRepository.findByUserId(userId)
                 .orElseGet(UserProfile::new);

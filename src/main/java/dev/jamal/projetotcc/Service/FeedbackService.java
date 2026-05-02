@@ -5,6 +5,7 @@ import dev.jamal.projetotcc.DTO.Feedback.FeedbackResponseDTO;
 import dev.jamal.projetotcc.Entities.Hobby;
 import dev.jamal.projetotcc.Entities.User;
 import dev.jamal.projetotcc.Entities.UserHobbyFeedback;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.FeedbackMapper;
 import dev.jamal.projetotcc.Repository.HobbyRepository;
 import dev.jamal.projetotcc.Repository.UserHobbyFeedbackRepository;
@@ -28,10 +29,10 @@ public class FeedbackService {
     public FeedbackResponseDTO avaliar(FeedbackCreateRequestDTO dto){
 
         User user= userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         Hobby hobby= hobbyRepository.findById(dto.getHobbyId())
-                .orElseThrow(() -> new RuntimeException("Hobby não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Hobby não encontrado"));
 
         UserHobbyFeedback feedback = feedbackMapper.toEntity(dto, user, hobby);
 

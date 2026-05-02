@@ -5,6 +5,7 @@ import dev.jamal.projetotcc.DTO.Interest.UserInterestResponseDTO;
 import dev.jamal.projetotcc.Entities.Interest;
 import dev.jamal.projetotcc.Entities.User;
 import dev.jamal.projetotcc.Entities.UserInterest;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.UserInterestMapper;
 import dev.jamal.projetotcc.Repository.InterestRepository;
 import dev.jamal.projetotcc.Repository.UserInterestRepository;
@@ -38,10 +39,10 @@ public class UserInterestService {
             UserInterestCreateRequestDTO dto
     ) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
         Interest interest = interestRepository.findById(dto.getInterestId())
-                .orElseThrow(() -> new RuntimeException("Interesse não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Interesse não encontrado"));
 
         dto.setUserId(userId);
 

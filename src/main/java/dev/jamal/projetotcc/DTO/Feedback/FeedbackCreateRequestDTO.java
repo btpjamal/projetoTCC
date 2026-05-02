@@ -10,15 +10,15 @@ import lombok.Setter;
 @Setter
 public class FeedbackCreateRequestDTO {
 
-    @NotNull
+    @NotNull(message = "O ID do usuário é obrigatório.")
     private Long userId;
 
-    @NotNull
+    @NotNull(message = "O ID do hobby é obrigatório.")
     private Long hobbyId;
 
-    @NotNull
-    @Min(1)
-    @Max(5)
+    @NotNull(message = "A nota é obrigatória")
+    @Min(value = 1, message = "A nota mínima é 1")
+    @Max(value = 5, message = "A nota máxima é 5")
     private Integer rating;
 }
 

@@ -5,6 +5,7 @@ import dev.jamal.projetotcc.Entities.Hobby;
 import dev.jamal.projetotcc.Entities.UserHobbyFeedback;
 import dev.jamal.projetotcc.Entities.UserInterest;
 import dev.jamal.projetotcc.Entities.UserProfile;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.RecommendationMapper;
 import dev.jamal.projetotcc.Repository.HobbyRepository;
 import dev.jamal.projetotcc.Repository.UserHobbyFeedbackRepository;
@@ -34,7 +35,7 @@ public class RecommendationService {
     public List<HobbyRecommendationDTO> recomendar (Long userId){
 
         UserProfile profile = userProfileRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Perfil do usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Perfil do usuário não encontrado"));
 
         List<UserInterest> interesses = userInterestRepository.findByUserIdWithInterest(userId);
 

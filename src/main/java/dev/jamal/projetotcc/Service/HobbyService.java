@@ -4,6 +4,7 @@ import dev.jamal.projetotcc.DTO.Hobby.HobbyCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.Hobby.HobbyResponseDTO;
 import dev.jamal.projetotcc.Entities.Hobby;
 import dev.jamal.projetotcc.Entities.HobbyCategory;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.HobbyMapper;
 import dev.jamal.projetotcc.Repository.HobbyCategoryRepository;
 import dev.jamal.projetotcc.Repository.HobbyRepository;
@@ -34,7 +35,7 @@ public class HobbyService {
     @Transactional
     public HobbyResponseDTO buscarPorId(Long id) {
         Hobby hobby = hobbyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hobby não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Hobby não encontrado."));
 
         return hobbyMapper.toResponseDTO(hobby);
     }
@@ -42,7 +43,7 @@ public class HobbyService {
     public HobbyResponseDTO salvar(HobbyCreateRequestDTO dto) {
 
         HobbyCategory category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
 
         Hobby hobby = hobbyMapper.toEntity(dto, category);
 
@@ -53,10 +54,10 @@ public class HobbyService {
 
     public HobbyResponseDTO atualizar(Long id, HobbyCreateRequestDTO dto) {
         Hobby hobby = hobbyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hobby não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Hobby não encontrado."));
 
         HobbyCategory category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
 
         hobby.setNome(dto.getNome());
         hobby.setDescricao(dto.getDescricao());
@@ -73,7 +74,7 @@ public class HobbyService {
 
     public void deletar(Long id) {
         if (!hobbyRepository.existsById(id)) {
-            throw new RuntimeException("Hobby não encontrado");
+            throw new ResourceNotFoundException("Hobby não encontrado");
         }
 
         hobbyRepository.deleteById(id);
@@ -83,6 +84,6 @@ public class HobbyService {
     @Transactional
     public Hobby buscarEntidadePorId(Long id) {
         return hobbyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Hobby não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Hobby não encontrado."));
     }
 }

@@ -3,6 +3,7 @@ package dev.jamal.projetotcc.Controllers;
 import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.User.UserResponseDTO;
 import dev.jamal.projetotcc.Service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
     // POST /api/v1/users
     @PostMapping
     public ResponseEntity<UserResponseDTO> cadastrar(
-            @RequestBody UserCreateRequestDTO dto
+            @RequestBody @Valid UserCreateRequestDTO dto
     ) {
         UserResponseDTO response = userService.cadastrar(dto);
 
@@ -45,7 +46,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> atualizar(
         @PathVariable Long id,
-        @RequestBody UserCreateRequestDTO dto
+        @RequestBody @Valid UserCreateRequestDTO dto
     ) {
         UserResponseDTO response = userService.atualizar(id, dto);
         return ResponseEntity.ok(response);

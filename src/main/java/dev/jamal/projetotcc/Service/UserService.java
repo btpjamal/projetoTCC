@@ -3,6 +3,8 @@ package dev.jamal.projetotcc.Service;
 import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.User.UserResponseDTO;
 import dev.jamal.projetotcc.Entities.User;
+import dev.jamal.projetotcc.Exception.BusinessException;
+import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.UserMapper;
 import dev.jamal.projetotcc.Repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -24,7 +26,7 @@ public class UserService {
     public UserResponseDTO cadastrar(UserCreateRequestDTO dto){
 
         if (userRepository.existsByEmail(dto.getEmail())){
-            throw new RuntimeException("Email já cadastrado.");
+            throw new BusinessException("Email já cadastrado.");
         }
 
         User user = userMapper.toEntity(dto);
@@ -47,7 +49,7 @@ public class UserService {
     public UserResponseDTO buscarPorId(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         return userMapper.toResponseDTO(user);
     }
@@ -59,13 +61,13 @@ public class UserService {
     ) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         // valida email duplicado
         userRepository.findByEmail(dto.getEmail())
                 .ifPresent(outro -> {
                     if (!outro.getId().equals(id)) {
-                        throw new RuntimeException("Email já está em uso.");
+                        throw new BusinessException("Email já está em uso.");
                     }
                 });
 
@@ -81,7 +83,7 @@ public class UserService {
     // DELETE
     public void deletar(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado.");
+            throw new ResourceNotFoundException("Usuário não encontrado.");
         }
 
         userRepository.deleteById(id);
@@ -92,6 +94,6 @@ public class UserService {
     @Transactional
     public User buscarEntidadePorId(Long id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
     }
 }
