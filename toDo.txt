@@ -14,5 +14,7 @@ ele iria ler o banco de dados e devolver uma resposta no Json para o front-end r
 ------> TESTAR RUNNER E CRIAR MAIS EXEMPLOS DE HOBBIES <--------
 
 
-criar controllers endpoint
+-> criar controllers endpoint -> OK
+-> documentação swagger -> OK
+-> Implementar autenticação JWT
 logo após tudo isso, analisar como começar a fazer o front-end
