@@ -16,5 +16,5 @@ ele iria ler o banco de dados e devolver uma resposta no Json para o front-end r
 
 -> criar controllers endpoint -> OK
 -> documentação swagger -> OK
--> Implementar autenticação JWT
+-> Implementar autenticação JWT -> 7. criar JwtAuthenticationFilter
 logo após tudo isso, analisar como começar a fazer o front-end
