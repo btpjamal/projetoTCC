@@ -44,7 +44,6 @@ public class UserInterestService {
         Interest interest = interestRepository.findById(dto.getInterestId())
                 .orElseThrow(() -> new ResourceNotFoundException("Interesse não encontrado"));
 
-        dto.setUserId(userId);
 
         UserInterest userInterest = userInterestMapper.toEntity(dto, user, interest);
 

@@ -4,7 +4,6 @@ import dev.jamal.projetotcc.DTO.Profile.UserProfileCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.Profile.UserProfileResponseDTO;
 import dev.jamal.projetotcc.Service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
