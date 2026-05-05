@@ -1,7 +1,7 @@
 package dev.jamal.projetotcc.DTO.Profile;
 
 import dev.jamal.projetotcc.DTO.User.UserSummaryDTO;
-import dev.jamal.projetotcc.Entities.UserProfile;
+import dev.jamal.projetotcc.Enum.NivelSocial;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,6 @@ public class UserProfileResponseDTO {
     private Long id;
     private Double tempoDisponivel;
     private Double orcamento;
-    private UserProfile.NivelSocial nivelSocial;
+    private NivelSocial nivelSocial;
     private UserSummaryDTO user;
 }

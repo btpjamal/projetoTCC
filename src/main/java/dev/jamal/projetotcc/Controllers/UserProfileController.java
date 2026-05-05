@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +25,14 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
+
     @Operation(
             summary = "Buscar perfil do usuário",
             description = "Retorna tempo disponível, orçamento e perfil social do usuário."
     )
     @ApiResponse(responseCode = "200", description = "Perfil encontrado")
     @ApiResponse(responseCode = "404", description = "Perfil não encontrado")
+    @Transactional
     @GetMapping
     public ResponseEntity<UserProfileResponseDTO> buscarPerfil(
         @PathVariable Long userId
@@ -48,7 +52,7 @@ public class UserProfileController {
     @PutMapping
     public ResponseEntity<UserProfileResponseDTO> criarOuAtualizarPerfil(
             @PathVariable Long userId,
-            @RequestBody UserProfileCreateRequestDTO dto
+            @RequestBody @Valid UserProfileCreateRequestDTO dto
     ) {
         return ResponseEntity.ok(userProfileService.criarOuAtualizar(userId, dto));
     }

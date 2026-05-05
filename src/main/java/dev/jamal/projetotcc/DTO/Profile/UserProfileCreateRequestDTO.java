@@ -1,6 +1,7 @@
 package dev.jamal.projetotcc.DTO.Profile;
 
-import dev.jamal.projetotcc.Entities.UserProfile;
+import dev.jamal.projetotcc.Enum.NivelSocial;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,12 @@ import lombok.Setter;
 public class UserProfileCreateRequestDTO {
     // esse DTO liga o perfil a um usuário existente
 
-    private Long userId;
+    @NotNull(message = "O tempo disponível é obrigatório")
     private Double tempoDisponivel;
+
+    @NotNull(message = "O orçamento é obrigatório")
     private Double orcamento;
-    private UserProfile.NivelSocial nivelSocial;
+
+    @NotNull(message = "O nível social é obrigatório")
+    private NivelSocial nivelSocial;
 }

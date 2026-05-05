@@ -6,6 +6,7 @@ import dev.jamal.projetotcc.DTO.Hobby.HobbyResponseDTO;
 import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.User.UserResponseDTO;
 import dev.jamal.projetotcc.Entities.*;
+import dev.jamal.projetotcc.Enum.NivelSocial;
 import dev.jamal.projetotcc.Repository.*;
 import dev.jamal.projetotcc.Service.FeedbackService;
 import dev.jamal.projetotcc.Service.HobbyService;
@@ -59,7 +60,7 @@ public class TestServiceRunner {
             String senha,
             Double tempoDisponivel,
             Double orcamento,
-            UserProfile.NivelSocial nivelSocial
+            NivelSocial nivelSocial
     ) {
 
         UserResponseDTO user = userRepository.findByEmail(email)
@@ -281,7 +282,7 @@ public class TestServiceRunner {
                     "123",
                     2.0,
                     50.0,
-                    UserProfile.NivelSocial.INTROVERTIDO
+                    NivelSocial.INTROVERTIDO
             );
 
             adicionarOuAtualizarInteresse(joao.userId(), "Esporte", 5);
@@ -303,7 +304,7 @@ public class TestServiceRunner {
                     "123",
                     4.0,
                     120.0,
-                    UserProfile.NivelSocial.EXTROVERTIDO
+                    NivelSocial.EXTROVERTIDO
             );
 
             adicionarOuAtualizarInteresse(maria.userId(), "Social", 5);

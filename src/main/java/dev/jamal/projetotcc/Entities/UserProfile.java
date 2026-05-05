@@ -1,5 +1,6 @@
 package dev.jamal.projetotcc.Entities;
 
+import dev.jamal.projetotcc.Enum.NivelSocial;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,17 +18,13 @@ public class UserProfile {
 
     @Column(nullable = false)
     private Double tempoDisponivel;
+
     @Column(nullable = false)
     private Double orcamento;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NivelSocial nivelSocial;
-
-    public enum NivelSocial {
-        INTROVERTIDO,
-        EXTROVERTIDO
-    }
 
     // relacionamento de um para um
     // um perfil tem um usuário

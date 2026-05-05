@@ -5,6 +5,7 @@ import dev.jamal.projetotcc.Entities.Hobby;
 import dev.jamal.projetotcc.Entities.UserHobbyFeedback;
 import dev.jamal.projetotcc.Entities.UserInterest;
 import dev.jamal.projetotcc.Entities.UserProfile;
+import dev.jamal.projetotcc.Enum.NivelSocial;
 import dev.jamal.projetotcc.Exception.ResourceNotFoundException;
 import dev.jamal.projetotcc.Mapper.RecommendationMapper;
 import dev.jamal.projetotcc.Repository.HobbyRepository;
@@ -114,11 +115,11 @@ public class RecommendationService {
             return 0.0;
         }
 
-        boolean usuarioIntrovertido = profile.getNivelSocial() == UserProfile.NivelSocial.INTROVERTIDO;
+        boolean usuarioIntrovertido = profile.getNivelSocial() == NivelSocial.INTROVERTIDO;
 
         boolean hobbyIndividual = hobby.getTipoSocializacao() == Hobby.TipoSocial.INDIVIDUAL;
 
-        boolean usuarioExtrovertido = profile.getNivelSocial() == UserProfile.NivelSocial.EXTROVERTIDO;
+        boolean usuarioExtrovertido = profile.getNivelSocial() == NivelSocial.EXTROVERTIDO;
 
         boolean hobbySocial = hobby.getTipoSocializacao() == Hobby.TipoSocial.SOCIAL;
 
@@ -181,11 +182,11 @@ public class RecommendationService {
             motivos.add("é compatível com seu tempo disponível");
         }
 
-        if (hobby.getTipoSocializacao() == Hobby.TipoSocial.INDIVIDUAL && profile.getNivelSocial() == UserProfile.NivelSocial.INTROVERTIDO) {
+        if (hobby.getTipoSocializacao() == Hobby.TipoSocial.INDIVIDUAL && profile.getNivelSocial() == NivelSocial.INTROVERTIDO) {
             motivos.add("combina com atividades mais individuais");
         }
 
-        if (hobby.getTipoSocializacao() == Hobby.TipoSocial.SOCIAL && profile.getNivelSocial() == UserProfile.NivelSocial.EXTROVERTIDO) {
+        if (hobby.getTipoSocializacao() == Hobby.TipoSocial.SOCIAL && profile.getNivelSocial() == NivelSocial.EXTROVERTIDO) {
             motivos.add("combina com atividades sociais");
         }
 
