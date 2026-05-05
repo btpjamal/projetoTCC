@@ -48,7 +48,7 @@ public class JwtService {
                 .before(new Date());
     }
 
-    private String extrairEmail(String token) {
+    public String extrairEmail(String token) {
         return extrairClaims(token).getSubject();
     }
 
