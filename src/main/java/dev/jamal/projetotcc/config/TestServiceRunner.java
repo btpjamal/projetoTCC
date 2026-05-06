@@ -170,11 +170,10 @@ public class TestServiceRunner {
             FeedbackCreateRequestDTO dto =
                     new FeedbackCreateRequestDTO();
 
-            dto.setUserId(userId);
             dto.setHobbyId(hobby.getId());
             dto.setRating(nota);
 
-            feedbackService.avaliar(dto);
+            feedbackService.avaliar(userId,dto);
 
             System.out.println(
                     "Feedback criado: "

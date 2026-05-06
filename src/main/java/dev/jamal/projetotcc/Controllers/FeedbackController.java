@@ -6,6 +6,7 @@ import dev.jamal.projetotcc.Service.FeedbackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Tag(name = "Feedbacks", description = "Avaliações dos usuários sobre hobbies experimentados")
 @RestController
-@RequestMapping("/api/v1/feedbacks")
+@RequestMapping("/api/v1/users/{userId}/feedbacks")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class FeedbackController {
@@ -28,9 +29,10 @@ public class FeedbackController {
     @ApiResponse(responseCode = "404", description = "Usuário ou hobby não encontrado")
     @PostMapping
     public ResponseEntity<FeedbackResponseDTO> avaliar(
-            @RequestBody FeedbackCreateRequestDTO dto
+            @PathVariable Long userId,
+            @RequestBody  @Valid FeedbackCreateRequestDTO dto
     ) {
-        FeedbackResponseDTO response = feedbackService.avaliar(dto);
+        FeedbackResponseDTO response = feedbackService.avaliar(userId,dto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -40,7 +42,7 @@ public class FeedbackController {
     @Operation(summary = "Listar feedbacks por usuário", description = "Retorna o histórico de hobbies avaliados por um usuário")
     @ApiResponse(responseCode = "200", description = "Feedbacks encontrados")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-    @GetMapping("/user/{userId}")
+    @GetMapping
     public ResponseEntity<List<FeedbackResponseDTO>> listarPorUsuario(
             @PathVariable Long userId
     ) {

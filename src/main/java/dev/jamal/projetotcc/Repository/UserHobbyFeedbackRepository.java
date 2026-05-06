@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserHobbyFeedbackRepository extends JpaRepository<UserHobbyFeedback, Long> {
+
+    Optional<UserHobbyFeedback> findByUserIdAndHobbyId(Long userId, Long hobbyId);
 
     @Query("""
         SELECT f

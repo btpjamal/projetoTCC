@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class FeedbackCreateRequestDTO {
 
-    @NotNull(message = "O ID do usuário é obrigatório.")
-    private Long userId;
 
     @NotNull(message = "O ID do hobby é obrigatório.")
     private Long hobbyId;
@@ -27,7 +25,6 @@ public class FeedbackCreateRequestDTO {
 EXEMPLO DE JSON QUE O FRONT-END VAI MANDAR PARA O BACK-END
 
 {
-    "userId": 1,
     "hobbyId": 3,
     "rating": 5
 }

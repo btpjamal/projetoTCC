@@ -26,15 +26,19 @@ public class FeedbackService {
     private final HobbyRepository hobbyRepository;
     private final FeedbackMapper feedbackMapper;
 
-    public FeedbackResponseDTO avaliar(FeedbackCreateRequestDTO dto){
+    public FeedbackResponseDTO avaliar(Long userId, FeedbackCreateRequestDTO dto){
 
-        User user= userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         Hobby hobby= hobbyRepository.findById(dto.getHobbyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Hobby não encontrado"));
 
-        UserHobbyFeedback feedback = feedbackMapper.toEntity(dto, user, hobby);
+        UserHobbyFeedback feedback = userHobbyFeedbackRepository.
+                findByUserIdAndHobbyId(userId, dto.getHobbyId())
+                .orElseGet(() -> feedbackMapper.toEntity(dto,user, hobby));
+
+        feedback.setRating(dto.getRating());
 
         UserHobbyFeedback salvo = userHobbyFeedbackRepository.save(feedback);
 
