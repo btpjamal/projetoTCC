@@ -2,7 +2,6 @@ package dev.jamal.projetotcc.Mapper;
 
 import dev.jamal.projetotcc.DTO.Profile.UserProfileCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.Profile.UserProfileResponseDTO;
-import dev.jamal.projetotcc.DTO.User.UserCreateRequestDTO;
 import dev.jamal.projetotcc.Entities.User;
 import dev.jamal.projetotcc.Entities.UserProfile;
 import lombok.RequiredArgsConstructor;

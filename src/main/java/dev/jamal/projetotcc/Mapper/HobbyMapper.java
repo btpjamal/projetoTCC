@@ -1,6 +1,5 @@
 package dev.jamal.projetotcc.Mapper;
 
-import dev.jamal.projetotcc.DTO.Category.HobbyCategoryResponseDTO;
 import dev.jamal.projetotcc.DTO.Hobby.HobbyCreateRequestDTO;
 import dev.jamal.projetotcc.DTO.Hobby.HobbyResponseDTO;
 import dev.jamal.projetotcc.DTO.Hobby.HobbySummaryDTO;
