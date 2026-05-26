@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
+import { useNavigate } from "react-router";
+import "./css/Recommendations.css";
 
 export default function Recommendations() {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function carregarRecomendacoes() {
@@ -13,6 +16,12 @@ export default function Recommendations() {
 
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
+
+        if (!token || !userId) {
+            localStorage.clear();
+            navigate("/login");
+            return;
+        }
 
         const response = await api.get(`/recommendations/${userId}`, {
             headers: {
@@ -28,6 +37,12 @@ export default function Recommendations() {
         console.error("status:", error.response?.status);
         console.error("Resposta:", error.response?.data);
 
+          if (error.response?.status === 401 || error.response?.status === 403) {
+              localStorage.clear();
+              navigate("/login");
+              return;
+          }
+
         setErro("Não foi possível carregar as recomendações");
       } finally {
         setLoading(false);
@@ -35,35 +50,73 @@ export default function Recommendations() {
     }
 
     carregarRecomendacoes();
-  }, []);
+  }, [navigate]);
 
-  if (loading) return <p>Carregando recomendações...</p>;
-  if (erro) return <p>{erro}</p>;
+  if (loading) {
+      return (
+          <main className="recommendations-page">
+              <div className="recommendation-loading">
+                  <p>Carregando recomendações...</p>
+              </div>
+          </main>
+      );
+  }
 
-  return (
-    <div>
-      <h1>Recomendações</h1>
+  if (erro) {
+      return (
+          <main className="recommendations-page">
+              <div className="recommendation-error">
+                  <p>{erro}</p>
+              </div>
+          </main>
+      );
+  }
 
-      {recommendations.length === 0 ? (
-        <p>Nenhuma recomendação encontrada.</p>
-      ) : (
-        recommendations.map((item) => (
-          <div
-            key={item.hobbyId}
-            style={{
-              border: "1px solid #ccc",
-              padding: 15,
-              marginBottom: 10,
-              borderRadius: 10,
-            }}
-          >
-            <h2>{item.nome}</h2>
-            <p>Categoria: {item.categoria}</p>
-            <p>Score: {item.score}</p>
-            <p>{item.motivo}</p>
-          </div>
-        ))
-      )}
-    </div>
-  );
+    return (
+        <main className="recommendations-page">
+            <div className="recommendations-container">
+                <header className="recommendations-header">
+                    <h1 className="recommendations-title">Recomendações</h1>
+                    <p className="recommendations-subtitle">
+                        Hobbies sugeridos com base no seu perfil, interesses e preferências.
+                    </p>
+                </header>
+
+                {recommendations.length === 0 ? (
+                    <div className="recommendation-empty">
+                        <h2>Nenhuma recomendação encontrada</h2>
+                        <p>
+                            Ainda não encontramos sugestões para o seu perfil.
+                        </p>
+                    </div>
+                ) : (
+                    <section className="recommendations-grid">
+                        {recommendations.map((item) => (
+                            <article className="recommendation-card" key={item.hobbyId}>
+                                <div className="recommendation-card-header">
+                <span className="recommendation-category">
+                  {item.categoria}
+                </span>
+
+                                    <span className="recommendation-score">
+                  {item.score} pts
+                </span>
+                                </div>
+
+                                <h2 className="recommendation-name">{item.nome}</h2>
+
+                                <p className="recommendation-description">
+                                    {item.descricao}
+                                </p>
+
+                                <p className="recommendation-reason">
+                                    {item.motivo}
+                                </p>
+                            </article>
+                        ))}
+                    </section>
+                )}
+            </div>
+        </main>
+    );
 }
