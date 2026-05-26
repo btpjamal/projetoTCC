@@ -12,16 +12,16 @@ export default function Recommendations() {
         setLoading(true);
 
         const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
 
-        const response = await api.get(
-          "http://localhost:8080/api/v1/recommendations/3",
-          {
+        const response = await api.get(`/recommendations/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
         );
 
+        console.log("Recomendações recebidas:", response.data);
         setRecommendations(response.data);
       } catch (error) {
         console.error(error);
