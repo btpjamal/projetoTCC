@@ -19,7 +19,12 @@ export default function Login() {
         senha,
       });
 
+      console.log("Resposta do login:", response.data);
+
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("nome", response.data.nome);
+      localStorage.setItem("email", response.data.email);
 
       navigate("/recommendations");
     } catch {
