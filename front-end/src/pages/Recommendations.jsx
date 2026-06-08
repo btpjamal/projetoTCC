@@ -8,6 +8,12 @@ export default function Recommendations() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const navigate = useNavigate();
+  const nome = localStorage.getItem("nome");
+
+  function handleLogout() {
+      localStorage.clear();
+      navigate("/login");
+  }
 
   useEffect(() => {
     async function carregarRecomendacoes() {
@@ -76,10 +82,19 @@ export default function Recommendations() {
         <main className="recommendations-page">
             <div className="recommendations-container">
                 <header className="recommendations-header">
-                    <h1 className="recommendations-title">Recomendações</h1>
-                    <p className="recommendations-subtitle">
-                        Hobbies sugeridos com base no seu perfil, interesses e preferências.
-                    </p>
+                    <div>
+                        <h1 className="recommendations-title">
+                            Olá, {nome || "usuário"}
+                        </h1>
+
+                        <p className="recommendations-subtitle">
+                            Hobbies sugeridos com base no seu perfil, interesses e preferências.
+                        </p>
+                    </div>
+
+                    <button className="logout-button" onClick={handleLogout}>
+                        Sair
+                    </button>
                 </header>
 
                 {recommendations.length === 0 ? (
