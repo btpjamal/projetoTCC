@@ -43,6 +43,7 @@
     padding: 22px;
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
 .recommendation-card:hover {

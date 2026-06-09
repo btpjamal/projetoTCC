@@ -107,7 +107,10 @@ export default function Recommendations() {
                 ) : (
                     <section className="recommendations-grid">
                         {recommendations.map((item) => (
-                            <article className="recommendation-card" key={item.hobbyId}>
+                            <article className="recommendation-card"
+                                     key={item.hobbyId}
+                                     onClick={() => navigate(`/recommendations/${item.hobbyId}`)}
+                            >
                                 <div className="recommendation-card-header">
                 <span className="recommendation-category">
                   {item.categoria}

@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import Interests from "./pages/Interests";
 import Recommendations from "./pages/Recommendations";
 import Feedbacks from "./pages/Feedbacks";
+import RecommendationDetails from "./pages/RecommendationDetails.jsx";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/interests" element={<Interests />} />
         <Route path="/recommendations" element={<Recommendations />} />
         <Route path="/feedbacks" element={<Feedbacks />} />
+        <Route path="/recommendations/:hobbyId" element={<RecommendationDetails />} />
       </Routes>
   );
 }
